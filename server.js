@@ -13,7 +13,7 @@ const moodRoutes = require('./routes/moods');
 dotenv.config();
 connectDB();
 
-const app = express();
+const app = express();//server creation
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
@@ -40,12 +40,12 @@ app.use('/api/moods', moodRoutes);
 
 // Socket.io events
 io.on('connection', (socket) => {
-    console.log(`🔌 New client connected: ${socket.id}`);
+    console.log(`New client connected: ${socket.id}`);
     const Message = require('./models/Message');
   
     socket.on('joinRoom', (roomId) => {
       socket.join(roomId);
-      console.log(`📥 Socket ${socket.id} joined room: ${roomId}`);
+      console.log(`Socket ${socket.id} joined room: ${roomId}`);
     });
   
     socket.on('chatMessage', (data) => {
@@ -67,23 +67,23 @@ io.on('connection', (socket) => {
     });
   
     socket.on('disconnect', () => {
-      console.log(`❌ Client disconnected: ${socket.id}`);
+      console.log(` Client disconnected: ${socket.id}`);
     });
     socket.on('chatMessage', async (msg) => {
         try {
           const { sender, roomId, text, createdAt } = msg;
       
-          // 🧱 Log incoming payload for debugging
-          console.log('📩 Incoming message:', msg);
+          // Log incoming payload for debugging
+          console.log('Incoming message:', msg);
       
-          // 🧼 Validation before save
+          //  Validation before save
           if (!sender || !roomId || !text) {
             return socket.emit('error', {
               msg: 'Missing one or more required fields: sender, roomId, text',
             });
           }
       
-          // 💾 Save to DB
+          // Save to DB
           const savedMessage = await Message.create({
             sender,
             roomId,
@@ -91,20 +91,20 @@ io.on('connection', (socket) => {
             createdAt: createdAt || new Date()
           });
       
-          // 📡 Emit message to all in room
+          //  Emit message to all in room
           io.to(roomId).emit('chatMessage', savedMessage);
-          console.log('✅ Message saved and broadcasted');
+          console.log(' Message saved and broadcasted');
           
         } catch (err) {
-          console.error('❌ Message save failed:', err);
+          console.error(' Message save failed:', err);
           socket.emit('error', { msg: 'Internal server error while saving message' });
         }
       });
       socket.on('joinRoom', (roomId) => {
         socket.join(roomId);
-        console.log(`🚪 ${socket.id} joined room: ${roomId}`);
+        console.log(`${socket.id} joined room: ${roomId}`);
       });
   });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT} 💬`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
