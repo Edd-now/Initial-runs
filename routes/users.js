@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/authMiddleware');
+const { getUserDetails, deleteAccount } = require('../controllers/userController');
 
 
-router.get('/me', auth, (req, res) => {
-  res.json({ msg: `Hello user with ID: ${req.user.id}, role: ${req.user.role}` });
-});
+router.get('/me', auth, getUserDetails);
+router.delete('/me', auth, deleteAccount);
 
 module.exports = router;
