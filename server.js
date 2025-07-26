@@ -27,7 +27,7 @@ app.use(cors());
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/users', require('./routes/users'));
+app.use('/api/user', require('./routes/user'));
 app.use('/api/chat', require('./routes/chat'));
 app.use('/api/groups', require('./routes/group'));
 app.use('/api/bookings', require('./routes/booking'));
