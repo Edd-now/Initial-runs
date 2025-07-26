@@ -4,7 +4,6 @@ const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const socketio = require('socket.io');
 const cors = require('cors');
-const therapistRoutes = require('./routes/therapistRoutes');
 const journalRoutes = require('./routes/journalRoutes');
 const moodRoutes = require('./routes/moods');
 
@@ -34,7 +33,6 @@ app.use('/api/groups', require('./routes/group'));
 app.use('/api/bookings', require('./routes/booking'));
 app.use('/api/availability', require('./routes/availability'));
 app.use('/api/notifications', require('./routes/notification'));
-app.use('/api/therapists', therapistRoutes);
 app.use('/api/journals', journalRoutes);
 app.use('/api/moods', moodRoutes);
 

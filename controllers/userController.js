@@ -10,6 +10,27 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
+exports.getAllTherapists = async (req, res) => {
+    try {
+      const therapists = await User.find({ role: 'therapist' }).select('-password');
+      res.json(therapists);
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to fetch therapists', error: err.message });
+    }
+  };
+  
+  exports.getTherapistById = async (req, res) => {
+    try {
+      const therapist = await User.findById(req.params.id).select('-password');
+      if (!therapist || therapist.role !== 'therapist') {
+        return res.status(404).json({ message: 'Therapist not found' });
+      }
+      res.json(therapist);
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to fetch therapist', error: err.message });
+    }
+  };
+
 exports.deleteAccount = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.user.id);
